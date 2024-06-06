@@ -3,9 +3,9 @@ POST http://localhost:8000/api/v1/user
 Content-Type: application/json
 
 {
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "secretpassword"
+    "name": "Pumpkin",
+    "email": "a@a.com",
+    "password": "1"
 }
 
 ###get
@@ -17,6 +17,71 @@ POST http://localhost:8000/api/v1/user/login
 Content-Type: application/json
 
 {
-    "email": "john@example.com",
-    "password": "secretpassword"
+    "email": "a@a.com",
+    "password": "1"
 }
+
+
+###post product
+POST http://localhost:8000/api/v1/product
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MTc1OTU4MjQsImV4cCI6MTcxNzU5OTQyNH0.DbPxvHo_AeKWJwbm2NgslnkJt53KC39IMGAJicUY5Bc
+
+{
+    "name": "Product 13",
+    "price": 100,
+    "description": "This is the description for product 6.",
+    "images": [
+      "https://unsplash.com/photos/a-squirrel-eating-a-nut-in-a-field-of-daisies-igYIeewfnOs",
+      "https://unsplash.com/photos/a-squirrel-eating-a-nut-in-a-field-of-daisies-igYIeewfnOs"
+    ],
+    "category": "6660599f5fa21f0dd54d3a09" 
+}
+
+
+###get products
+get http://localhost:8000/api/v1/product
+
+
+###get products by id
+get http://localhost:8000/api/v1/product/6660382b379d83338e97cd70
+
+
+###post category
+post http://localhost:8000/api/v1/category
+Content-Type: application/json
+
+    {
+    "name": "Electronics",
+    "description": "Devices and gadgets including phones, laptops, and accessories.",
+    "createdAt": "2023-01-01T00:00:00.000Z",
+    "updatedAt": "2023-01-01T00:00:00.000Z"
+  }
+
+
+###get all category
+get http://localhost:8000/api/v1/category
+
+### POST request to add an item to the cart
+POST http://localhost:8000/api/v1/cart
+Content-Type: application/json
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MTc1OTM0NjMsImV4cCI6MTcxNzU5NzA2M30.bTj2DNsE-F1_U4Q_WfCgXBw8XfOhnp7BAX_5s0qTpdo
+
+{
+    "productId": "66603823379d83338e97cd6e",
+    "quantity": 2
+}
+
+### PUT request to update a cart item
+PUT http://localhost:8000/api/v1/cart/your_cart_item_id_here
+Content-Type: application/json
+
+{
+    "quantity": 3
+}
+
+### DELETE request to remove a cart item
+DELETE http://localhost:8000/api/v1/cart/your_cart_item_id_here
+
+### GET request to fetch all items in the cart
+GET http://localhost:8000/api/v1/cart

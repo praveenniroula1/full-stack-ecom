@@ -1,7 +1,8 @@
 import userSchema from "../Schema/userSchema.js"
 
 export const insertUser=async(obj)=>{
-    await userSchema(obj).save()
+    const saveUser= await userSchema(obj).save()
+    return saveUser
 }
 
 export const getUserById = async (userId) => {

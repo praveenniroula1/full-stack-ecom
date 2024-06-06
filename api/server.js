@@ -14,7 +14,14 @@ dbConfig()
 
 // Routes
 import userRouter from "../api/SRC/Routers/userRouter.js"
-app.use("/api/v1/user", userRouter); 
+import productRouter from "../api/SRC/Routers/productRouter.js"
+import categoryRouter from "../api/SRC/Routers/categoryRouter.js"
+import cartRouter from "../api/SRC/Routers/cartRouter.js"
+app.use("/api/v1/user",  userRouter);
+app.use("/api/v1/product", productRouter);
+app.use("/api/v1/category", categoryRouter);
+app.use("/api/v1/cart", cartRouter);
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
