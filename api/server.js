@@ -17,10 +17,12 @@ import userRouter from "../api/SRC/Routers/userRouter.js"
 import productRouter from "../api/SRC/Routers/productRouter.js"
 import categoryRouter from "../api/SRC/Routers/categoryRouter.js"
 import cartRouter from "../api/SRC/Routers/cartRouter.js"
+import checkoutRouter from "../api/SRC/Routers/checkoutRouter.js"
 app.use("/api/v1/user",  userRouter);
 app.use("/api/v1/product", productRouter);
 app.use("/api/v1/category", categoryRouter);
 app.use("/api/v1/cart", cartRouter);
+app.use("/api/v1/checkout", checkoutRouter);
 
 
 // Error handling middleware

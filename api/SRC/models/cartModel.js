@@ -3,36 +3,43 @@ import Cart from '../Schema/cartSchema.js';
 // Function to add an item to the cart
 export const addToCart = async (itemData, user) => {
   try {
-    // Extract the userId from the user object
-    const userId = user.userId;
+    const userId = user._id;
 
-    // Create a new cart item using the cartItemSchema
-    const newCartItem = new Cart({
-      user: userId, // Pass the userId instead of the entire user object
-      items: [{
-        productId: itemData.productId,
-        quantity: itemData.quantity
-      }]
-    });
+    let cart = await Cart.findOne({ user: userId });
 
-    // Save the new cart item to the database
-    await newCartItem.save();
+    if (!cart) {
+      cart = new Cart({ user: userId, items: [] });
+    }
 
-    return newCartItem;
+    const cartItemIndex = cart.items.findIndex(item => item.productId.toString() === itemData.productId);
+
+    if (cartItemIndex > -1) {
+      cart.items[cartItemIndex].quantity += itemData.quantity;
+    } else {
+      cart.items.push({ productId: itemData.productId, quantity: itemData.quantity });
+    }
+
+    const updatedCart = await cart.save();
+    return updatedCart;
   } catch (error) {
     throw new Error('Error adding item to cart');
   }
 };
+
 // Function to update a cart item
 export const updateCartItem = async (cartItemId, updateData, user) => {
   try {
-    const updatedCartItem = await Cart.findOneAndUpdate(
-      { _id: cartItemId, user: user._id },
-      updateData,
-      { new: true }
-    );
+    const cart = await Cart.findOne({ 'items._id': cartItemId, user: user._id });
 
-    return updatedCartItem;
+    if (!cart) {
+      throw new Error('Cart item not found');
+    }
+
+    const cartItem = cart.items.id(cartItemId);
+    cartItem.quantity = updateData.quantity;
+
+    await cart.save();
+    return cart;
   } catch (error) {
     throw new Error('Error updating cart item');
   }
@@ -41,8 +48,17 @@ export const updateCartItem = async (cartItemId, updateData, user) => {
 // Function to remove a cart item
 export const removeCartItem = async (cartItemId, user) => {
   try {
-    const deletedCartItem = await Cart.findOneAndDelete({ _id: cartItemId, user: user._id });
-    return deletedCartItem ? true : false;
+    const cart = await Cart.findOne({ user: user._id });
+    
+    if (!cart) {
+      throw new Error('Cart not found');
+    }
+
+    const cartItem = cart.items.id(cartItemId);
+    cartItem.remove();
+    
+    await cart.save();
+    return true;
   } catch (error) {
     throw new Error('Error removing cart item');
   }
@@ -51,8 +67,8 @@ export const removeCartItem = async (cartItemId, user) => {
 // Function to get all items in the cart for a specific user
 export const getCartItems = async (user) => {
   try {
-    const cartItems = await Cart.find({ user: user._id }).populate('productId');
-    return cartItems;
+    const cart = await Cart.findOne({ user: user._id }).populate('items.productId');
+    return cart;
   } catch (error) {
     throw new Error('Error getting cart items');
   }

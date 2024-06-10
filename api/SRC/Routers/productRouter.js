@@ -1,6 +1,6 @@
 import express from 'express';
 import multer from 'multer';
-import { insertProduct, getProductById, getAllProducts, updateProductById, deleteProductById } from '../models/productModel.js';
+import { insertProduct, getProductById, getAllProducts, updateProductById, deleteProductById, getFeaturedProducts } from '../models/productModel.js';
 import { auth } from '../Auth/auth.js';
 
 const router = express.Router();
@@ -49,10 +49,41 @@ router.post('/', upload.array('images', 5), async (req, res) => {
   }
 });
 
-router.get('/', async (req, res) => {
+// Route to search for products
+router.get('/search', async (req, res) => {
+  const { query } = req.query;
+
   try {
-    const products = await getAllProducts();
-    res.json(products);
+    const searchResults = await searchProducts(query);
+    res.json(searchResults);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Route to get all products with pagination
+router.get('/', async (req, res) => {
+  const { page = 1, limit = 10 } = req.query;
+
+  try {
+    const result = await getAllProducts(parseInt(page), parseInt(limit));
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
+// Route to get featured products
+router.get('/featured', async (req, res) => {
+  try {
+    const featuredProducts = await getFeaturedProducts();
+    res.json(featuredProducts);
   } catch (error) {
     res.status(500).json({
       success: false,
