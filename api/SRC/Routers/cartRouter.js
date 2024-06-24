@@ -12,9 +12,7 @@ const router = express.Router();
 // Route to add an item to the cart
 router.post('/', auth, async (req, res) => {
   try {
-    console.log(req.user)
     const cartItem = await addToCart(req.body, req.user); // Assuming req.user contains the logged-in user's information
-    console.log(cartItem)
     res.status(201).json(cartItem);
   } catch (error) {
     res.status(500).json({ message: error.message });

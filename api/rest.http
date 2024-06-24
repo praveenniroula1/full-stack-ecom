@@ -1,10 +1,10 @@
 ###testing ost user
-POST http://localhost:8000/api/v1/user
+POST http://localhost:8000/api/v1/user/register
 Content-Type: application/json
 
 {
-    "name": "Pumpkin",
-    "email": "a@a.com",
+    "name": "admin",
+    "email": "ad@ad.com",
     "password": "1"
 }
 
@@ -85,3 +85,31 @@ DELETE http://localhost:8000/api/v1/cart/your_cart_item_id_here
 
 ### GET request to fetch all items in the cart
 GET http://localhost:8000/api/v1/cart
+
+
+###testing the payment
+POST http://localhost:8000/api/v1/checkout/create-session
+Content-Type: application/json
+
+{
+  "cart": {
+    "items": [
+      {
+        "product": {
+          "name": "Sample Product 1",
+          "description": "Description of Sample Product 1",
+          "price": 10
+        },
+        "quantity": 2
+      },
+      {
+        "product": {
+          "name": "Sample Product 2",
+          "description": "Description of Sample Product 2",
+          "price": 15
+        },
+        "quantity": 1
+      }
+    ]
+  }
+}

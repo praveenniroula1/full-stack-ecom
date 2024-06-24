@@ -20,7 +20,6 @@ export const searchProducts = async (query) => {
 // Function to insert a new product
 export const insertProduct = async (obj) => {
   try {
-    console.log('Product data:', obj); // Add this line
     const saveProduct = await productSchema(obj).save();
     return saveProduct;
   } catch (error) {
