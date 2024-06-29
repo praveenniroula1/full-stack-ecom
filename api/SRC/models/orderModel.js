@@ -7,10 +7,10 @@ export const insertOrder = async (obj) => {
     const newOrder = await orderSchema(obj).save();
     return newOrder;
   } catch (error) {
-    throw new Error("Error inserting order");
+    console.error("Error inserting order:", error); // Log the specific error
+    throw new Error("Error inserting order"); // Rethrow the error or handle as needed
   }
 };
-
 // Function to get an order by ID
 export const getOrderById = async (orderId) => {
   try {
@@ -18,6 +18,16 @@ export const getOrderById = async (orderId) => {
     return order;
   } catch (error) {
     throw new Error("Error getting order by ID");
+  }
+};
+// Function to get an order by ID
+export const getAllOrder = async () => {
+  try {
+    const order = await orderSchema.find();
+    console.log("order")
+    return order;
+  } catch (error) {
+    throw new Error("Error getting order");
   }
 };
 
