@@ -24,7 +24,6 @@ export const getOrderById = async (orderId) => {
 export const getAllOrder = async () => {
   try {
     const order = await orderSchema.find();
-    console.log("order")
     return order;
   } catch (error) {
     throw new Error("Error getting order");

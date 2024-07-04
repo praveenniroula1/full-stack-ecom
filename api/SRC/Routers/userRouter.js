@@ -3,6 +3,8 @@ import { getUserByEmail, getUserById, insertUser, updateUserPassword } from "../
 const router = express.Router();
 import jwt from "jsonwebtoken"
 
+
+
 router.post("/register", async (req, res) => {
   try {
     const insertUserData = await insertUser(req.body);
@@ -58,7 +60,6 @@ router.post("/login", async (req, res) => {
       // Extract email and password from request body
       const { email, password } = req.body;
 
-      console.log(`Attempting login for email: ${email}`); // Log the email being searched for
 
       // Check if the user exists
       const user = await getUserByEmail(email);
@@ -72,10 +73,11 @@ router.post("/login", async (req, res) => {
       }
 
       // Generate JWT token
-      const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+      const accessToken = jwt.sign({ userId: user._id }, process.env.JWT_ACCESS_SECRET, { expiresIn: "15m" });
+      const refreshToken = jwt.sign({ userId: user._id }, process.env.JWT_REFRESH_SECRET, { expiresIn: "7d" });
 
       // Send token in response
-      res.status(200).json({ success: true, token, user });
+      res.status(200).json({ success: true, accessToken,refreshToken, user });
   } catch (error) {
       console.error("Error logging in:", error);
       res.status(500).json({ success: false, message: "Server error" });
@@ -85,7 +87,6 @@ router.post("/login", async (req, res) => {
 router.post("/change-password", async (req, res) => {
   try {
     const { userId, oldPassword, newPassword } = req.body;
-    console.log(`Received change password request - userId: ${userId}, oldPassword: ${oldPassword}, newPassword: ${newPassword}`);
 
     // Get user by ID
     const user = await getUserById(userId);

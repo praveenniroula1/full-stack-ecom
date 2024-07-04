@@ -118,7 +118,7 @@ Content-Type: application/json
 ### POST New Order ###
 POST http://localhost:8000/api/v1/orders
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MTk2MjA2NzAsImV4cCI6MTcxOTYyNDI3MH0.wF0eMbFItmmqk4COZEkQozyI2PFbNO7tb7pgMkHhAbw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MTk5NzMwNDgsImV4cCI6MTcxOTk3Mzk0OH0.mI5ZQ5_wUoEV8ogR-OwR0J2abSLHcoWumiWqS9GYk0A
 
 {
   "user": "666033efdbdf25ccf3fb56c3",
@@ -132,4 +132,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwM
 
 ### POST New Order ###
 Get http://localhost:8000/api/v1/orders/
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MTk2MjA2NzAsImV4cCI6MTcxOTYyNDI3MH0.wF0eMbFItmmqk4COZEkQozyI2PFbNO7tb7pgMkHhAbw
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjYwMzNlZmRiZGYyNWNjZjNmYjU2YzMiLCJpYXQiOjE3MjAwNTQ0MzEsImV4cCI6MTcyMDA1NTMzMX0.6MenxuCH8PTali4H3uJ_Sjs21c_Lshyp8iGAQx4GUkw

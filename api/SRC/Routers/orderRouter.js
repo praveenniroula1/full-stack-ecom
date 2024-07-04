@@ -40,7 +40,7 @@ router.post("/", auth, async (req, res) => {
 
 
 // Route to get all orders
-router.get("/",  async (req, res) => {
+router.get("/",auth,  async (req, res) => {
   try {
     const orders = await getAllOrder();
     res.status(200).json({
