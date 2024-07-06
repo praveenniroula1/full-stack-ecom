@@ -63,7 +63,7 @@ export const getFeaturedProducts = async () => {
   try {
     const products = await productSchema.find()
       .sort({ createdAt: -1 })
-      .limit(8);
+      .limit(6);
     return products;
   } catch (error) {
     throw new Error("Error getting featured products");

@@ -2,12 +2,18 @@ import "dotenv/config"
 import express from "express";
 import dbConfig from "./SRC/DBConfig/dbConfig.js";
 import cors from "cors"
+import path from "path"
 const app = express();
+
+app.use("/photos",express.static("upload"))
 
 
 // Middleware
 app.use(express.json()); 
 app.use(cors())
+
+
+
 
 // dbconfig
 dbConfig()

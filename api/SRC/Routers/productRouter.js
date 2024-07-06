@@ -1,44 +1,52 @@
-import express from 'express';
-import multer from 'multer';
-import { insertProduct, getProductById, getAllProducts, updateProductById, deleteProductById, getFeaturedProducts } from '../models/productModel.js';
-import { auth } from '../Auth/auth.js';
+import express from "express";
+import multer from "multer";
+import {
+  insertProduct,
+  getProductById,
+  getAllProducts,
+  updateProductById,
+  deleteProductById,
+  getFeaturedProducts,
+} from "../models/productModel.js";
+import { auth } from "../Auth/auth.js";
 
 const router = express.Router();
 
-const fileUploadDestination = 'public/img/products';
+// Setup multer for validation and upload destination
+const fileUploadDestination = "upload";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, fileUploadDestination);
   },
   filename: (req, file, cb) => {
-    const fullFileName = Date.now() + '-' + file.originalname;
+    const fullFileName = Date.now() + "-" + file.originalname;
     cb(null, fullFileName);
   },
 });
 
 const upload = multer({ storage });
 
-router.post('/', upload.array('images', 5), async (req, res) => {
+// Route to handle product creation with image uploads
+router.post("/", upload.array("images", 5), async (req, res) => {
   try {
     const files = req.files;
     if (files.length) {
-      const images = files.map((img) => img.path.replace('public', ''));
+      const images = files.map((img) => img.path.slice(6)); // Adjust this slice according to your directory structure
       req.body.images = images;
     }
-
     req.body.price = parseFloat(req.body.price);
 
     const newProduct = await insertProduct(req.body);
     if (newProduct) {
       res.status(201).json({
         success: true,
-        message: 'Product created successfully',
+        message: "Product created successfully",
         product: newProduct,
       });
     } else {
       res.status(400).json({
         success: false,
-        message: 'Product creation failed',
+        message: "Product creation failed",
       });
     }
   } catch (error) {
@@ -49,8 +57,9 @@ router.post('/', upload.array('images', 5), async (req, res) => {
   }
 });
 
+
 // Route to search for products
-router.get('/search', async (req, res) => {
+router.get("/search", async (req, res) => {
   const { query } = req.query;
 
   try {
@@ -65,7 +74,7 @@ router.get('/search', async (req, res) => {
 });
 
 // Route to get all products with pagination
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   try {
@@ -80,7 +89,7 @@ router.get('/', async (req, res) => {
 });
 
 // Route to get featured products
-router.get('/featured', async (req, res) => {
+router.get("/featured", async (req, res) => {
   try {
     const featuredProducts = await getFeaturedProducts();
     res.json(featuredProducts);
@@ -92,7 +101,7 @@ router.get('/featured', async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
+router.get("/:id", async (req, res) => {
   try {
     const product = await getProductById(req.params.id);
     if (product) {
@@ -100,7 +109,7 @@ router.get('/:id', async (req, res) => {
     } else {
       res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
   } catch (error) {
@@ -111,19 +120,26 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-router.put('/:id', auth, async (req, res) => {
+// Route to update a product by ID with image uploads
+router.put("/:id", auth, upload.array("images", 5), async (req, res) => {
   try {
+    const files = req.files;
+    if (files.length) {
+      const images = files.map((img) => img.path.slice(6));
+      req.body.images = images;
+    }
+
     const updatedProduct = await updateProductById(req.params.id, req.body);
     if (updatedProduct) {
       res.json({
         success: true,
-        message: 'Product updated successfully',
+        message: "Product updated successfully",
         product: updatedProduct,
       });
     } else {
       res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
   } catch (error) {
@@ -134,18 +150,18 @@ router.put('/:id', auth, async (req, res) => {
   }
 });
 
-router.delete('/:id', auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   try {
     const deletedProduct = await deleteProductById(req.params.id);
     if (deletedProduct) {
       res.json({
         success: true,
-        message: 'Product deleted successfully',
+        message: "Product deleted successfully",
       });
     } else {
       res.status(404).json({
         success: false,
-        message: 'Product not found',
+        message: "Product not found",
       });
     }
   } catch (error) {
