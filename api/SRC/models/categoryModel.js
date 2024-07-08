@@ -1,4 +1,3 @@
-// categoryModel.js
 
 import Category from '../Schema/categorySchema.js';
 

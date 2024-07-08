@@ -28,7 +28,7 @@ router.post('/create-session', auth, async (req, res) => {
       mode: 'payment',
       success_url: 'http://localhost:3000/success?session_id={CHECKOUT_SESSION_ID}',
       cancel_url: 'http://localhost:3000/cancel',
-      metadata: { userId: req.user.userId, products: JSON.stringify(items) },
+      metadata: { userId: req.user.userId, products: JSON.stringify(items._id) },
     });
 
     res.json({ sessionId: session.id });

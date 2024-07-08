@@ -7,6 +7,7 @@ import {
   updateProductById,
   deleteProductById,
   getFeaturedProducts,
+  searchProducts
 } from "../models/productModel.js";
 import { auth } from "../Auth/auth.js";
 
@@ -58,7 +59,6 @@ router.post("/", upload.array("images", 5), async (req, res) => {
 });
 
 
-// Route to search for products
 router.get("/search", async (req, res) => {
   const { query } = req.query;
 
@@ -75,7 +75,7 @@ router.get("/search", async (req, res) => {
 
 // Route to get all products with pagination
 router.get("/", async (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+  const { page = 1, limit = 3 } = req.query;
 
   try {
     const result = await getAllProducts(parseInt(page), parseInt(limit));
@@ -150,7 +150,7 @@ router.put("/:id", auth, upload.array("images", 5), async (req, res) => {
   }
 });
 
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:id",  async (req, res) => {
   try {
     const deletedProduct = await deleteProductById(req.params.id);
     if (deletedProduct) {
