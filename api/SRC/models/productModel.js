@@ -53,8 +53,7 @@ export const getAllProducts = async (page = 1, limit = 10) => {
       pages: Math.ceil(total / limit),
     };
   } catch (error) {
-    throw new Error("Error getting all products");
-  }
+console.log(error)  }
 };
 
 // Function to get the last 8 added products
@@ -66,8 +65,7 @@ export const getFeaturedProducts = async () => {
       .limit(6);
     return products;
   } catch (error) {
-    throw new Error("Error getting featured products");
-  }
+console.log(error)  }
 };
 
 // Function to update a product by ID
