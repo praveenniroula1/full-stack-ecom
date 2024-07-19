@@ -6,10 +6,7 @@ export const searchProducts = async (query) => {
     const regex = new RegExp(query, "i"); // "i" for case-insensitive
 
     const searchResults = await productSchema.find({
-      $or: [
-        { name: { $regex: regex } },
-        { description: { $regex: regex } }
-      ]
+      $or: [{ name: { $regex: regex } }, { description: { $regex: regex } }],
     });
 
     return searchResults;
@@ -34,7 +31,7 @@ export const getProductById = async (productId) => {
     const product = await productSchema.findById(productId);
     return product;
   } catch (error) {
-    throw new Error("Error getting product by ID");
+    console.log(error);
   }
 };
 
@@ -42,7 +39,8 @@ export const getProductById = async (productId) => {
 export const getAllProducts = async (page = 1, limit = 10) => {
   try {
     const skip = (page - 1) * limit;
-    const products = await productSchema.find()
+    const products = await productSchema
+      .find()
       .sort({ createdAt: -1 }) // Sort by creation date, newest first
       .skip(skip)
       .limit(limit);
@@ -62,7 +60,8 @@ export const getAllProducts = async (page = 1, limit = 10) => {
 // Function to get the last 8 added products
 export const getFeaturedProducts = async () => {
   try {
-    const products = await productSchema.find()
+    const products = await productSchema
+      .find()
       .sort({ createdAt: -1 })
       .limit(6);
     return products;
@@ -74,7 +73,11 @@ export const getFeaturedProducts = async () => {
 // Function to update a product by ID
 export const updateProductById = async (productId, updateData) => {
   try {
-    const updatedProduct = await productSchema.findByIdAndUpdate(productId, updateData, { new: true, runValidators: true });
+    const updatedProduct = await productSchema.findByIdAndUpdate(
+      productId,
+      updateData,
+      { new: true, runValidators: true }
+    );
     return updatedProduct;
   } catch (error) {
     throw new Error("Error updating product by ID");
@@ -90,5 +93,3 @@ export const deleteProductById = async (productId) => {
     throw new Error("Error deleting product by ID");
   }
 };
-
-
