@@ -11,7 +11,7 @@ export const searchProducts = async (query) => {
 
     return searchResults;
   } catch (error) {
-    throw error;
+    console.log(error);
   }
 };
 
@@ -21,7 +21,7 @@ export const insertProduct = async (obj) => {
     const saveProduct = await productSchema(obj).save();
     return saveProduct;
   } catch (error) {
-    throw new Error("Error inserting product");
+    console.log(error);
   }
 };
 
@@ -53,7 +53,8 @@ export const getAllProducts = async (page = 1, limit = 10) => {
       pages: Math.ceil(total / limit),
     };
   } catch (error) {
-console.log(error)  }
+    console.log(error);
+  }
 };
 
 // Function to get the last 8 added products
@@ -65,7 +66,8 @@ export const getFeaturedProducts = async () => {
       .limit(6);
     return products;
   } catch (error) {
-console.log(error)  }
+    console.log(error);
+  }
 };
 
 // Function to update a product by ID
@@ -78,7 +80,7 @@ export const updateProductById = async (productId, updateData) => {
     );
     return updatedProduct;
   } catch (error) {
-    throw new Error("Error updating product by ID");
+    console.log(error);
   }
 };
 
@@ -88,6 +90,6 @@ export const deleteProductById = async (productId) => {
     const deletedProduct = await productSchema.findByIdAndDelete(productId);
     return deletedProduct;
   } catch (error) {
-    throw new Error("Error deleting product by ID");
+    console.log(error);
   }
 };
