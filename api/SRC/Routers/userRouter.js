@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken"
 
 
 
-router.post("/register", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const insertUserData = await insertUser(req.body);
     if (insertUserData) {
