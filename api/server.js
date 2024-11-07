@@ -1,22 +1,31 @@
-import "dotenv/config"
+import "dotenv/config";
 import express from "express";
 import dbConfig from "./SRC/DBConfig/dbConfig.js";
-import cors from "cors"
-import path from "path"
+import cors from "cors";
+import path from "path";
+import helmet from "helmet";
+import compression from "compression";
+import rateLimit from "express-rate-limit";
+import { createRequire } from 'module';
+const require = createRequire(import.meta.url);
 const app = express();
 
-app.use("/photos",express.static("upload"))
-
+// Apply rate limiting to all requests
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // limit each IP to 100 requests per windowMs
+});
 
 // Middleware
-app.use(express.json()); 
-app.use(cors())
+app.use(helmet());
+app.use(cors());
+app.use(express.json({ strict: true }));
+app.use(compression());
+app.use(limiter);
+app.use("/photos", express.static("upload", { maxAge: "1d" })); // Set caching headers
 
-
-
-
-// dbconfig
-dbConfig()
+// Initialize database
+dbConfig();
 
 // Routes
 import userRouter from "../api/SRC/Routers/userRouter.js"
@@ -34,15 +43,13 @@ app.use("/api/v1/checkout", checkoutRouter);
 app.use("/api/v1/orders", orderRouter);
 // app.use("/webhook", webHook);
 
-
-
-
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send("Internal Server Error");
 });
 
+// Start the server
 const port = process.env.PORT || 8000;
 app.listen(port, () => {
   console.log(`App is listening on port ${port}`);
